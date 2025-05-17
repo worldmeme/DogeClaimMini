@@ -6,7 +6,7 @@ import ClaimButton from '@/components/ClaimButton';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'; // Ganti <img> dengan <Image>
+import Image from 'next/image';
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -25,14 +25,14 @@ export default function Home() {
     if (status === 'authenticated' && session) {
       console.log('Wallet Address (using id):', session?.user?.id);
       console.log('Expires:', session?.expires);
-      console.log('User Verified:', session?.user?.verified || 'Not available');
+      console.log('Has Claimed:', session?.user?.hasClaimed || 'Not available'); // Ganti 'verified' dengan 'hasClaimed'
       console.log('Active Tab (useEffect):', activeTab);
       setActiveTab('claim');
     } else if (status === 'unauthenticated') {
       console.log('User unauthenticated, resetting activeTab');
       setActiveTab('claim');
     }
-  }, [status, session, activeTab]); // Tambahkan activeTab ke dependency array
+  }, [status, session, activeTab]);
 
   useEffect(() => {
     if (status === 'authenticated' && window.location.pathname !== '/') {
@@ -75,7 +75,7 @@ export default function Home() {
           <Image
             src="/xdoge-logo.png"
             alt="xdoge-logo"
-            width={192} // Sesuaikan dengan lg:w-48 (48 * 4 = 192px)
+            width={192}
             height={192}
             className="mb-4 animate-bounce"
           />
@@ -100,7 +100,7 @@ export default function Home() {
               <Image
                 src={user.profilePictureUrl || '/xdoge-logo.png'}
                 alt="Profile or Xdoge"
-                width={112} // Sesuaikan dengan lg:w-28 (28 * 4 = 112px)
+                width={112}
                 height={112}
                 className="rounded-full mb-2 border-4 border-blue-500 shadow-lg animate-fade-in"
               />
