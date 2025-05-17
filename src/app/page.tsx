@@ -6,14 +6,13 @@ import ClaimButton from '@/components/ClaimButton';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { MiniKit } from '@worldcoin/minikit-js';
+import Image from 'next/image'; // Ganti <img> dengan <Image>
 
 export default function Home() {
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState<'claim' | 'about'>('claim');
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -21,32 +20,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const fetchWalletAddress = async () => {
-      if (MiniKit.isInstalled() && status === 'authenticated') {
-        try {
-          const wallet = await MiniKit.commandsAsync.getWalletAddress();
-          if (wallet.status === 'success') {
-            setWalletAddress(wallet.address);
-            console.log('Wallet detected via MiniKit:', wallet.address);
-          } else {
-            console.error('Failed to fetch wallet address via MiniKit:', wallet);
-            setWalletAddress(null);
-          }
-        } catch (error) {
-          console.error('Error fetching wallet address:', error);
-          setWalletAddress(null);
-        }
-      }
-    };
-    fetchWalletAddress();
-  }, [status]);
-
-  useEffect(() => {
     console.log('Current Status:', status);
     console.log('Session:', session);
     if (status === 'authenticated' && session) {
       console.log('Wallet Address (using id):', session?.user?.id);
-      console.log('Wallet Address (MiniKit):', walletAddress);
       console.log('Expires:', session?.expires);
       console.log('User Verified:', session?.user?.verified || 'Not available');
       console.log('Active Tab (useEffect):', activeTab);
@@ -55,7 +32,7 @@ export default function Home() {
       console.log('User unauthenticated, resetting activeTab');
       setActiveTab('claim');
     }
-  }, [status, session, walletAddress]);
+  }, [status, session, activeTab]); // Tambahkan activeTab ke dependency array
 
   useEffect(() => {
     if (status === 'authenticated' && window.location.pathname !== '/') {
@@ -95,10 +72,12 @@ export default function Home() {
               {error}
             </p>
           )}
-          <img
+          <Image
             src="/xdoge-logo.png"
             alt="xdoge-logo"
-            className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mb-4 animate-bounce"
+            width={192} // Sesuaikan dengan lg:w-48 (48 * 4 = 192px)
+            height={192}
+            className="mb-4 animate-bounce"
           />
           <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">Xdoge App</p>
           <p className="text-base md:text-lg lg:text-xl text-gray-300 mt-2 animate-fade-in">Xdoge Meme on Worldchain</p>
@@ -118,21 +97,23 @@ export default function Home() {
         <div className="flex-1 flex flex-col justify-start w-full px-4 md:px-8 lg:px-12">
           <div className="w-full max-w-3xl mx-auto bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 lg:p-10 text-center border border-gray-700 shadow-xl mt-6 mb-20">
             <div className="flex flex-col items-center gap-4">
-              <img
+              <Image
                 src={user.profilePictureUrl || '/xdoge-logo.png'}
                 alt="Profile or Xdoge"
-                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full mb-2 border-4 border-blue-500 shadow-lg animate-fade-in"
+                width={112} // Sesuaikan dengan lg:w-28 (28 * 4 = 112px)
+                height={112}
+                className="rounded-full mb-2 border-4 border-blue-500 shadow-lg animate-fade-in"
               />
               <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white capitalize drop-shadow-md animate-fade-in">
                 Welcome, {user.username}!
               </p>
-              <p className="text-sm md:text-base lg:text-lg text-gray-400 break-all">{walletAddress || user.id}</p>
+              <p className="text-sm md:text-base lg:text-lg text-gray-400 break-all">{user.id}</p>
             </div>
 
             <div className="mt-6 w-full">
               {activeTab === 'claim' ? (
                 <div className="flex flex-col items-center gap-4 w-full animate-fade-in">
-                  <ClaimButton walletAddress={walletAddress || user.id} userName={user.username} />
+                  <ClaimButton walletAddress={user.id} userName={user.username} />
                 </div>
               ) : activeTab === 'about' ? (
                 <div className="animate-fade-in">
