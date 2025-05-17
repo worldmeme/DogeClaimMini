@@ -1,16 +1,18 @@
 'use client';
+
 import { walletAuth } from '@/auth/wallet';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { useCallback, useEffect, useState } from 'react';
 
-/**
- * This component is an example of how to authenticate a user
- * We will use Next Auth for this example, but you can use any auth provider
- * Read More: https://docs.world.org/mini-apps/commands/wallet-auth
- */
-export const AuthButton = () => {
+// Definisikan tipe untuk props
+type AuthButtonProps = {
+  onError?: () => void;
+};
+
+export const AuthButton = ({ onError }: AuthButtonProps) => {
   const [isPending, setIsPending] = useState(false);
+  const [state, setState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined); // Tambahkan state untuk feedback
   const { isInstalled } = useMiniKit();
 
   const onClick = useCallback(async () => {
@@ -18,33 +20,41 @@ export const AuthButton = () => {
       return;
     }
     setIsPending(true);
+    setState('pending');
     try {
       await walletAuth();
+      setState('success');
     } catch (error) {
       console.error('Wallet authentication button error', error);
+      setState('failed');
+      if (onError) onError(); // Panggil onError jika ada
+    } finally {
       setIsPending(false);
-      return;
+      setTimeout(() => setState(undefined), 2000); // Reset state setelah 2 detik
     }
-
-    setIsPending(false);
-  }, [isInstalled, isPending]);
+  }, [isInstalled, isPending, onError]);
 
   useEffect(() => {
     const authenticate = async () => {
       if (isInstalled && !isPending) {
         setIsPending(true);
+        setState('pending');
         try {
           await walletAuth();
+          setState('success');
         } catch (error) {
           console.error('Auto wallet authentication error', error);
+          setState('failed');
+          if (onError) onError(); // Panggil onError jika ada
         } finally {
           setIsPending(false);
+          setTimeout(() => setState(undefined), 2000);
         }
       }
     };
 
     authenticate();
-  }, [isInstalled, isPending]);
+  }, [isInstalled, isPending, onError]);
 
   return (
     <LiveFeedback
@@ -53,7 +63,7 @@ export const AuthButton = () => {
         pending: 'Logging in',
         success: 'Logged in',
       }}
-      state={isPending ? 'pending' : undefined}
+      state={state}
     >
       <Button
         onClick={onClick}
