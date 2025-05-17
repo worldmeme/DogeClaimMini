@@ -113,7 +113,7 @@ export default function Home() {
             <div className="mt-6 w-full">
               {activeTab === 'claim' ? (
                 <div className="flex flex-col items-center gap-4 w-full animate-fade-in">
-                  <ClaimButton walletAddress={user.id} userName={user.username} />
+                  <ClaimButton walletAddress={user.id ?? '0x0'} userName={user.username ?? 'Guest User'} />
                 </div>
               ) : activeTab === 'about' ? (
                 <div className="animate-fade-in">
