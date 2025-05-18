@@ -14,6 +14,7 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
   const [state, setState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined);
   const { isInstalled } = useMiniKit();
   const [hasAttemptedAutoAuth, setHasAttemptedAutoAuth] = useState(false);
+  const [authFailureCount, setAuthFailureCount] = useState(0);
 
   const onClick = useCallback(async () => {
     if (!isInstalled || isPending) {
@@ -24,9 +25,12 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
     try {
       await walletAuth();
       setState('success');
-    } catch (error: any) {
-      console.error('Wallet authentication button error:', error.message || error);
+      setAuthFailureCount(0);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Wallet authentication button error:', errorMessage);
       setState('failed');
+      setAuthFailureCount((prev) => prev + 1);
       if (onError) onError();
     } finally {
       setIsPending(false);
@@ -36,15 +40,18 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
 
   useEffect(() => {
     const authenticate = async () => {
-      if (isInstalled && !isPending && !hasAttemptedAutoAuth) {
+      if (isInstalled && !isPending && !hasAttemptedAutoAuth && authFailureCount < 2) {
         setIsPending(true);
         setState('pending');
         try {
           await walletAuth();
           setState('success');
-        } catch (error: any) {
-          console.error('Auto wallet authentication error:', error.message || error);
+          setAuthFailureCount(0);
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+          console.error('Auto wallet authentication error:', errorMessage);
           setState('failed');
+          setAuthFailureCount((prev) => prev + 1);
           if (onError) onError();
         } finally {
           setIsPending(false);
@@ -55,7 +62,7 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
     };
 
     authenticate();
-  }, [isInstalled, isPending, onError, hasAttemptedAutoAuth]);
+  }, [isInstalled, isPending, onError, hasAttemptedAutoAuth, authFailureCount]);
 
   return (
     <LiveFeedback
