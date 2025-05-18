@@ -1,11 +1,18 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
-  images: {
-    domains: ['static.usernames.app-backend.toolsforhumanity.com'],
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' }, // Sesuaikan dengan domain yang diizinkan
+          { key: 'Access-Control-Allow-Methods', value: 'GET,POST,OPTIONS' },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
+        ],
+      },
+    ];
   },
-  allowedDevOrigins: ['0919-2001-448a-20e0-9ecc-e5b2-acb8-9266-f404.ngrok-free.app'], // Hapus "https://"
-  reactStrictMode: false,
 };
 
-export default nextConfig;
+module.exports = nextConfig;

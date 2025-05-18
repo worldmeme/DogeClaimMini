@@ -3,7 +3,7 @@
 import { walletAuth } from '@/auth/wallet';
 import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type AuthButtonProps = {
   onError?: () => void;
@@ -13,9 +13,14 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
   const [isPending, setIsPending] = useState(false);
   const [state, setState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined);
   const { isInstalled } = useMiniKit();
+  const [isMounted, setIsMounted] = useState(false); // Tambahkan untuk pengecekan hydrasi
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const onClick = useCallback(async () => {
-    if (!isInstalled || isPending) {
+    if (!isInstalled || isPending || !isMounted) {
       return;
     }
     setIsPending(true);
@@ -32,7 +37,7 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
       setIsPending(false);
       setTimeout(() => setState(undefined), 2000);
     }
-  }, [isInstalled, isPending, onError]);
+  }, [isInstalled, isPending, isMounted, onError]);
 
   return (
     <LiveFeedback
@@ -45,7 +50,7 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
     >
       <Button
         onClick={onClick}
-        disabled={isPending || !isInstalled}
+        disabled={isPending || !isInstalled || !isMounted}
         size="lg"
         variant="primary"
       >
