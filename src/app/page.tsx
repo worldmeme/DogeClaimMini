@@ -63,7 +63,7 @@ export default function Home() {
           />
           <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">Xdoge App</p>
           <p className="text-base md:text-lg lg:text-xl text-gray-300 mt-2 animate-fade-in">Xdoge Meme on Worldchain</p>
-          <AuthButton onError={() => setError('Failed to authenticate. Please try again or install the Worldcoin app.')} />
+          <AuthButton onError={() => setError('Authentication failed. Please try again or install the Worldcoin app.')} />
         </Page.Main>
       </Page>
     );
