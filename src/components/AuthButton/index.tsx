@@ -13,7 +13,7 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
   const [isPending, setIsPending] = useState(false);
   const [state, setState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined);
   const { isInstalled } = useMiniKit();
-  const [isMounted, setIsMounted] = useState(false); // Tambahkan untuk pengecekan hydrasi
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
