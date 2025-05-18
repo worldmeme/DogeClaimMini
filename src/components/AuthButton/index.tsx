@@ -5,15 +5,15 @@ import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { useCallback, useEffect, useState } from 'react';
 
-// Definisikan tipe untuk props
 type AuthButtonProps = {
   onError?: () => void;
 };
 
 export const AuthButton = ({ onError }: AuthButtonProps) => {
   const [isPending, setIsPending] = useState(false);
-  const [state, setState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined); // Tambahkan state untuk feedback
+  const [state, setState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined);
   const { isInstalled } = useMiniKit();
+  const [hasAttemptedAutoAuth, setHasAttemptedAutoAuth] = useState(false);
 
   const onClick = useCallback(async () => {
     if (!isInstalled || isPending) {
@@ -24,37 +24,38 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
     try {
       await walletAuth();
       setState('success');
-    } catch (error) {
-      console.error('Wallet authentication button error', error);
+    } catch (error: any) {
+      console.error('Wallet authentication button error:', error.message || error);
       setState('failed');
-      if (onError) onError(); // Panggil onError jika ada
+      if (onError) onError();
     } finally {
       setIsPending(false);
-      setTimeout(() => setState(undefined), 2000); // Reset state setelah 2 detik
+      setTimeout(() => setState(undefined), 2000);
     }
   }, [isInstalled, isPending, onError]);
 
   useEffect(() => {
     const authenticate = async () => {
-      if (isInstalled && !isPending) {
+      if (isInstalled && !isPending && !hasAttemptedAutoAuth) {
         setIsPending(true);
         setState('pending');
         try {
           await walletAuth();
           setState('success');
-        } catch (error) {
-          console.error('Auto wallet authentication error', error);
+        } catch (error: any) {
+          console.error('Auto wallet authentication error:', error.message || error);
           setState('failed');
-          if (onError) onError(); // Panggil onError jika ada
+          if (onError) onError();
         } finally {
           setIsPending(false);
+          setHasAttemptedAutoAuth(true);
           setTimeout(() => setState(undefined), 2000);
         }
       }
     };
 
     authenticate();
-  }, [isInstalled, isPending, onError]);
+  }, [isInstalled, isPending, onError, hasAttemptedAutoAuth]);
 
   return (
     <LiveFeedback
@@ -67,11 +68,11 @@ export const AuthButton = ({ onError }: AuthButtonProps) => {
     >
       <Button
         onClick={onClick}
-        disabled={isPending}
+        disabled={isPending || !isInstalled}
         size="lg"
         variant="primary"
       >
-        Login with Wallet
+        {isInstalled ? 'Login with Wallet' : 'MiniKit Not Installed'}
       </Button>
     </LiveFeedback>
   );

@@ -5,7 +5,6 @@ import { AuthButton } from '../components/AuthButton';
 import ClaimButton from '@/components/ClaimButton';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function Home() {
@@ -13,33 +12,18 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'claim' | 'about'>('claim');
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    console.log('Current Status:', status);
-    console.log('Session:', session);
     if (status === 'authenticated' && session) {
-      console.log('Wallet Address (using id):', session?.user?.id);
-      console.log('Expires:', session?.expires);
-      console.log('Has Claimed:', session?.user?.hasClaimed || 'Not available');
-      console.log('Active Tab (useEffect):', activeTab);
       setActiveTab('claim');
     } else if (status === 'unauthenticated') {
-      console.log('User unauthenticated, resetting activeTab');
       setActiveTab('claim');
     }
-  }, [status, session, activeTab]);
-
-  useEffect(() => {
-    if (status === 'authenticated' && window.location.pathname !== '/') {
-      console.log('Redirecting to / to ensure proper rendering');
-      router.replace('/');
-    }
-  }, [status, router]);
+  }, [status, session]);
 
   if (!isMounted) {
     return null;
@@ -52,7 +36,6 @@ export default function Home() {
   };
 
   if (status === 'loading') {
-    console.log('Rendering Loading State');
     return (
       <Page>
         <Page.Main className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-b from-purple-900 to-blue-900">
@@ -63,7 +46,6 @@ export default function Home() {
   }
 
   if (status === 'unauthenticated' || user.id === '0x0') {
-    console.log('Rendering Unauthenticated State');
     return (
       <Page>
         <Page.Main className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-b from-purple-900 to-blue-900 text-white font-sans">
@@ -81,13 +63,12 @@ export default function Home() {
           />
           <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">Xdoge App</p>
           <p className="text-base md:text-lg lg:text-xl text-gray-300 mt-2 animate-fade-in">Xdoge Meme on Worldchain</p>
-          <AuthButton onError={() => setError('Network error during login')} />
+          <AuthButton onError={() => setError('Failed to authenticate. Please try again or install the Worldcoin app.')} />
         </Page.Main>
       </Page>
     );
   }
 
-  console.log('Rendering Authenticated State with activeTab:', activeTab);
   return (
     <Page>
       <div
@@ -180,10 +161,7 @@ export default function Home() {
 
         <div className="fixed bottom-0 left-0 w-full flex justify-center gap-4 p-4 bg-gray-800/90 backdrop-blur-sm border-t border-gray-700 shadow-lg">
           <button
-            onClick={() => {
-              console.log('Setting activeTab to claim');
-              setActiveTab('claim');
-            }}
+            onClick={() => setActiveTab('claim')}
             className={`px-4 py-2 text-sm md:text-base lg:text-lg font-semibold rounded-lg transition duration-300 w-1/2 max-w-[200px] transform hover:scale-105 ${
               activeTab === 'claim' ? 'bg-blue-800 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
@@ -191,10 +169,7 @@ export default function Home() {
             Claim
           </button>
           <button
-            onClick={() => {
-              console.log('Setting activeTab to about');
-              setActiveTab('about');
-            }}
+            onClick={() => setActiveTab('about')}
             className={`px-4 py-2 text-sm md:text-base lg:text-lg font-semibold rounded-lg transition duration-300 w-1/2 max-w-[200px] transform hover:scale-105 ${
               activeTab === 'about' ? 'bg-blue-800 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
