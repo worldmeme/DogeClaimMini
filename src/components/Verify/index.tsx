@@ -22,7 +22,7 @@ export const Verify = () => {
     setButtonState('pending');
     setWhichVerification(verificationLevel);
     const result = await MiniKit.commandsAsync.verify({
-      action: 'claim-xdoge', // Make sure to create this in the developer portal -> incognito actions
+      action: 'claim-dcmini', // Make sure to create this in the developer portal -> incognito actions
       verification_level: verificationLevel,
     });
     console.log(result.finalPayload);
@@ -31,7 +31,7 @@ export const Verify = () => {
       method: 'POST',
       body: JSON.stringify({
         payload: result.finalPayload,
-        action: 'claim-xdoge',
+        action: 'claim-dcmini',
       }),
     });
 

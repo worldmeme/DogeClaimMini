@@ -25,6 +25,17 @@ export default function Home() {
     }
   }, [status, session]);
 
+  const shareInvitation = () => {
+    const referralLink = `https://worldcoin.org/mini-app?app_id=app_a7089acf6de8bed630edea05e372db3c&app_mode=mini-app`;
+    const textToCopy = `Get DCMINI for free, where you can claim it every 7 days at no cost! Click the link: ${referralLink}`;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      alert('The invitation link and text have been copied to the clipboard!');
+    }).catch(err => {
+      alert('Failed to copy the text.');
+      console.error(err);
+    });
+  };
+
   if (!isMounted) {
     return null;
   }
@@ -55,14 +66,14 @@ export default function Home() {
             </p>
           )}
           <Image
-            src="/xdoge-logo.png"
-            alt="xdoge-logo"
+            src="/dogeclaimmini.png"
+            alt="dogeclaimmini"
             width={192}
             height={192}
             className="mb-4 animate-bounce"
           />
-          <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">Xdoge App</p>
-          <p className="text-base md:text-lg lg:text-xl text-gray-300 mt-2 animate-fade-in">Xdoge Meme on Worldchain</p>
+          <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">DogeClaimMini</p>
+          <p className="text-base md:text-lg lg:text-xl text-gray-300 mt-2 animate-fade-in">DogeClaimMini is a fun mini app built for the Worldcoin ecosystem</p>
           <AuthButton onError={() => setError('Authentication failed. Please try again or install the Worldcoin app.')} />
         </Page.Main>
       </Page>
@@ -79,8 +90,8 @@ export default function Home() {
           <div className="w-full max-w-3xl mx-auto bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 md:p-8 lg:p-10 text-center border border-gray-700 shadow-xl mt-6 mb-20">
             <div className="flex flex-col items-center gap-4">
               <Image
-                src={user.profilePictureUrl || '/xdoge-logo.png'}
-                alt="Profile or Xdoge"
+                src={user.profilePictureUrl || '/dogeclaimmini.png'}
+                alt="Profile or dogeclaimmini"
                 width={112}
                 height={112}
                 className="rounded-full mb-2 border-4 border-blue-500 shadow-lg animate-fade-in"
@@ -98,12 +109,12 @@ export default function Home() {
                 </div>
               ) : activeTab === 'about' ? (
                 <div className="animate-fade-in">
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-md">About Xdoge</h2>
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-md">About DCMINI</h2>
                   <p className="text-sm md:text-base lg:text-lg text-gray-300 mt-3 leading-relaxed">
-                    The Mini Xdoge app allows you to claim XDOGE tokens every 7 days. Join our vibrant community, claim your tokens, and participate in our exclusive rewards program for top holders! Something new is coming soon.
+                    DogeClaimMini is a fun mini app built for the Worldcoin ecosystem, allowing you to claim DCMINI tokens every 7 days with a community-driven twist! Join our vibrant community, earn exclusive rewards, and stay tuned for exciting updates.
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-gray-300 mt-3 leading-relaxed">
-                    Buy and Sell XDOGE:
+                    Buy and Sell DCMINI:
                   </p>
                   <div className="flex flex-col md:flex-row justify-center gap-4 w-full mt-4">
                     <a
@@ -126,7 +137,7 @@ export default function Home() {
                           d="M3 3h18M3 7h18M3 12h18m-6 5h6"
                         />
                       </svg>
-                      XDOGE Swap on UNO
+                      DCMINI Swap on UNO
                     </a>
                     <a
                       href="https://worldcoin.org/mini-app?app_id=app_0d4b759921490adc1f2bd569fda9b53a&app_mode=mini-app"
@@ -148,7 +159,7 @@ export default function Home() {
                           d="M3 3h18M3 7h18M3 12h18m-6 5h6"
                         />
                       </svg>
-                      XDOGE Swap on HOLDSTATION
+                      DCMINI Swap on HOLDSTATION
                     </a>
                     <a
                       href="https://accounts.bmwweb.me/register?ref=ZKO2JGYW"
@@ -174,11 +185,17 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="mt-4">
+                    <button
+                      onClick={shareInvitation}
+                      className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+                    >
+                      Share the Invitation with Friends
+                    </button>
                     <a
                       href="https://x.com/xdogeworld"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition duration-300"
+                      className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition duration-300 mt-2"
                     >
                       <svg
                         className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"

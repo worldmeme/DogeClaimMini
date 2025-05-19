@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'XDOGE App',
-  description: 'XDOGE Meme on Worldchain',
+  title: 'DogeClaimMini',
+  description: 'DogeClaimMini is a fun mini app built for the Worldcoin ecosystem',
 };
 
 export default async function RootLayout({

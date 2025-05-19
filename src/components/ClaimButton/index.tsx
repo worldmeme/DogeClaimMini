@@ -4,7 +4,7 @@ import { Button, LiveFeedback } from '@worldcoin/mini-apps-ui-kit-react';
 import { MiniKit, VerificationLevel } from '@worldcoin/minikit-js';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { ethers } from 'ethers';
-import xdogeAbi from '@/abi/xdoge.json';
+import dcminiAbi from '@/abi/dcmini.json';
 import Image from 'next/image';
 
 export default function ClaimButton({ walletAddress, userName }: { walletAddress: string; userName?: string }) {
@@ -18,14 +18,14 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
   const [verifyState, setVerifyState] = useState<'pending' | 'success' | 'failed' | undefined>(undefined);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const xdogeAddress = process.env.NEXT_PUBLIC_XDOGE_ADDRESS || '0xYourXdogeAddress';
+  const dcminiAddress = process.env.NEXT_PUBLIC_DCMINI_ADDRESS || '0xYourDcminiAddress';
   const rpcUrl = 'https://worldchain-mainnet.g.alchemy.com/public';
 
   // Bungkus provider dengan useMemo
   const provider = useMemo(() => new ethers.JsonRpcProvider(rpcUrl), [rpcUrl]);
 
   // Bungkus contract dengan useMemo
-  const contract = useMemo(() => new ethers.Contract(xdogeAddress, xdogeAbi, provider), [xdogeAddress, provider]);
+  const contract = useMemo(() => new ethers.Contract(dcminiAddress, dcminiAbi, provider), [dcminiAddress, provider]);
 
   // Bungkus fungsi dengan useCallback
   const fetchBalance = useCallback(async () => {
@@ -183,7 +183,7 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
     setVerifyState('pending');
     try {
       const result = await MiniKit.commandsAsync.verify({
-        action: 'claim-xdoge',
+        action: 'claim-dcmini',
         verification_level: VerificationLevel.Orb,
       });
       console.log('Verify result:', result.finalPayload);
@@ -192,7 +192,7 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
         method: 'POST',
         body: JSON.stringify({
           payload: result.finalPayload,
-          action: 'claim-xdoge',
+          action: 'claim-dcmini',
         }),
       });
 
@@ -243,8 +243,8 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
       const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
         transaction: [
           {
-            address: xdogeAddress,
-            abi: xdogeAbi,
+            address: dcminiAddress,
+            abi: dcminiAbi,
             functionName: 'claim',
             args: [],
           },
@@ -283,7 +283,7 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
         {userName && (
           <p className="text-xl md:text-2xl font-bold text-white capitalize animate-fade-in">{userName}</p>
         )}
-        <Image src="/xdoge-logo.png" alt="Xdoge Logo" width={40} height={40} className="animate-spin-slow" />
+        <Image src="/dogeclaimmini.png" alt="dogeclaimmini Logo" width={40} height={40} className="animate-spin-slow" />
       </div>
       <p className="text-xl md:text-2xl font-bold text-white">{timer}</p>
       {timeUntilNextClaim > 0 ? (
@@ -312,15 +312,15 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
             : 'CLAIM'}
         </Button>
       </LiveFeedback>
-      <p className="text-base md:text-lg text-white">Balance: {balance} XDOGE</p>
+      <p className="text-base md:text-lg text-white">Balance: {balance} DCMINI</p>
       <div className="mt-4 text-center">
         <p className="text-lg md:text-xl font-semibold text-white">Reward Top Holders</p>
         <div className="mt-2 space-y-1 text-gray-300">
-          <p className="text-sm md:text-base">1 - 10: <span className="font-semibold text-green-400">500 XDOGE</span></p>
-          <p className="text-sm md:text-base">11 - 50: <span className="font-semibold text-green-400">250 XDOGE</span></p>
-          <p className="text-sm md:text-base">51 - 100: <span className="font-semibold text-green-400">100 XDOGE</span></p>
-          <p className="text-sm md:text-base">101 - 250: <span className="font-semibold text-green-400">50 XDOGE</span></p>
-          <p className="text-sm md:text-base">251 - 500: <span className="font-semibold text-green-400">25 XDOGE</span></p>
+          <p className="text-sm md:text-base">1 - 10: <span className="font-semibold text-green-400">500 DCMINI</span></p>
+          <p className="text-sm md:text-base">11 - 50: <span className="font-semibold text-green-400">250 DCMINI</span></p>
+          <p className="text-sm md:text-base">51 - 100: <span className="font-semibold text-green-400">100 DCMINI</span></p>
+          <p className="text-sm md:text-base">101 - 250: <span className="font-semibold text-green-400">50 DCMINI</span></p>
+          <p className="text-sm md:text-base">251 - 500: <span className="font-semibold text-green-400">25 DCMINI</span></p>
         </div>
         <p className="mt-2 text-xs md:text-sm text-gray-500">Next reward distribution date: July 1, 2025</p>
       </div>
