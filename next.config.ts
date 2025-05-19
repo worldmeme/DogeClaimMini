@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
       {
         source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: 'https://xdoge-app.vercel.app' }, // Sesuaikan dengan domain Vercel
+          { key: 'Access-Control-Allow-Origin', value: 'https://xdogewld.site' }, // Sesuaikan dengan domain Vercel
           { key: 'Access-Control-Allow-Methods', value: 'GET,POST,OPTIONS' },
           { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
         ],
