@@ -100,14 +100,14 @@ export default function Home() {
                 <div className="animate-fade-in">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-md">About Xdoge</h2>
                   <p className="text-sm md:text-base lg:text-lg text-gray-300 mt-3 leading-relaxed">
-                    Xdoge Mini App lets you claim XDOGE tokens every 7 days. Join our vibrant community, claim your tokens, and participate in our exclusive top holders rewards program!
+                    The Mini Xdoge app allows you to claim XDOGE tokens every 7 days. Join our vibrant community, claim your tokens, and participate in our exclusive rewards program for top holders! Something new is coming soon.
                   </p>
                   <p className="text-sm md:text-base lg:text-lg text-gray-300 mt-3 leading-relaxed">
-                    Explore more on our markets:
+                    Buy and Sell XDOGE:
                   </p>
                   <div className="flex flex-col md:flex-row justify-center gap-4 w-full mt-4">
                     <a
-                      href="https://uno.worldcoin.org"
+                      href="https://worldcoin.org/mini-app?app_id=app_a4f7f3e62c1de0b9490a5260cb390b56&app_mode=mini-app"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-5 py-2 bg-blue-800 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center gap-2 transform hover:scale-105 text-base md:text-lg lg:text-xl shadow-md"
@@ -126,10 +126,10 @@ export default function Home() {
                           d="M3 3h18M3 7h18M3 12h18m-6 5h6"
                         />
                       </svg>
-                      UNO
+                      XDOGE Swap on UNO
                     </a>
                     <a
-                      href="https://holdstation.com"
+                      href="https://worldcoin.org/mini-app?app_id=app_0d4b759921490adc1f2bd569fda9b53a&app_mode=mini-app"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-5 py-2 bg-blue-800 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center gap-2 transform hover:scale-105 text-base md:text-lg lg:text-xl shadow-md"
@@ -148,7 +148,47 @@ export default function Home() {
                           d="M3 3h18M3 7h18M3 12h18m-6 5h6"
                         />
                       </svg>
-                      HOLDSTATION
+                      XDOGE Swap on HOLDSTATION
+                    </a>
+                    <a
+                      href="https://accounts.bmwweb.me/register?ref=ZKO2JGYW"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-5 py-2 bg-blue-800 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center gap-2 transform hover:scale-105 text-base md:text-lg lg:text-xl shadow-md"
+                    >
+                      <svg
+                        className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M3 3h18M3 7h18M3 12h18m-6 5h6"
+                        />
+                      </svg>
+                      Buy WLD Worldcoin
+                    </a>
+                  </div>
+                  <div className="mt-4">
+                    <a
+                      href="https://x.com/xdogeworld"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition duration-300"
+                    >
+                      <svg
+                        className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      </svg>
+                      Follow us on X
                     </a>
                   </div>
                 </div>
