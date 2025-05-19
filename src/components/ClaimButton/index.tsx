@@ -322,7 +322,7 @@ export default function ClaimButton({ walletAddress, userName }: { walletAddress
           <p className="text-sm md:text-base">101 - 250: <span className="font-semibold text-green-400">50 XDOGE</span></p>
           <p className="text-sm md:text-base">251 - 500: <span className="font-semibold text-green-400">25 XDOGE</span></p>
         </div>
-        <p className="mt-2 text-xs md:text-sm text-gray-500">Next reward distribution date: June 1, 2025</p>
+        <p className="mt-2 text-xs md:text-sm text-gray-500">Next reward distribution date: July 1, 2025</p>
       </div>
     </div>
   );
